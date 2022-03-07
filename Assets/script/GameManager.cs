@@ -11,21 +11,22 @@ public class GameManager : MonoBehaviour
     public List<Vector3> targetPositions;
     public TextMeshProUGUI scoreText;
     public GameObject gameOverPanel;
+    public GameObject mainMenuPanel;
+
+    
 
     private float minX = -3.75f;
     private float minY = -3.75f;
     private float distanceBetweenSquares = 2.5f;
 
-    private float spawnRate = 2f;
+    public float spawnRate = 2f;
     private Vector3 randomPos;
 
 
     private int score = 0;
     void Start()
     {
-        scoreText.text = $"Score:{score}";
-        gameOverPanel.SetActive(false);
-        StartCoroutine(SpawnRandomTarget());
+        mainMenuPanel.SetActive(true);
     }
 
     
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         while (!isGameOver)
         {
+            
             yield return new WaitForSeconds(spawnRate);
             int randomIndex = Random.Range(0, targetPrefabs.Length);
             randomPos = RandomSpawnPosition();
@@ -74,5 +76,19 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(0);
+    }
+    public void StartGame(int difficulty)
+    {
+        mainMenuPanel.SetActive(false);
+        isGameOver = false;
+        gameOverPanel.SetActive(false);
+
+        score = 0;
+        UpdateScore(0);
+      
+        spawnRate = 2f;
+        spawnRate /= difficulty;
+        
+        StartCoroutine(SpawnRandomTarget());
     }
 }

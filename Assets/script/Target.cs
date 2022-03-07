@@ -12,8 +12,10 @@ public class Target : MonoBehaviour
     void Start()
     {
         //Autodestrucción tras 2 segundos
-        Destroy(gameObject,lifeTime);
+        
         gameManagerScript = FindObjectOfType<GameManager>();
+        lifeTime = gameManagerScript.spawnRate;
+        Destroy(gameObject, lifeTime);
     }
 
     // Update is called once per frame
